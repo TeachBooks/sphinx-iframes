@@ -79,24 +79,37 @@ class IframeDirective(SphinxDirective):
             )
         if style != '':
             style = 'style="%s"'%(style)
+        if ('width' in style) or ('height' in style) or ('aspect-ratio' in style):
+            add_user = True
+        else:
+            add_user = False
         frame_style = self.options.get("styleframe",None)
         if frame_style is not None:
             frame_style = 'style="%s"'%(frame_style)
 
         if self.name == "video":
-             iframe_html = '<div class="video-container" %s>\n'%(style)
+             if add_user:
+                iframe_html = '<div class="video-container user" %s>\n'%(style)
+             else:
+                iframe_html = '<div class="video-container" %s>\n'%(style)
              iframe_html += f"""
                  <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
 		     """
              iframe_html += '\n</div>'
         elif self.name == 'h5p':
-             iframe_html = '<div class="iframe-container" %s>\n'%(style)
+             if add_user:
+                iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+             else:
+                iframe_html = '<div class="iframe-container" %s>\n'%(style)
              iframe_html += f"""
                  <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
 		     """
              iframe_html += '\n</div>'
         else:
-             iframe_html = '<div class="iframe-container" %s>\n'%(style)
+             if add_user:
+                iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+             else:
+                iframe_html = '<div class="iframe-container" %s>\n'%(style)
              iframe_html += f"""
                  <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
 		     """
