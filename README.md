@@ -1,4 +1,4 @@
-# Sphinx extension: Iframes
+# Iframes
 
 ```{admonition} User types
 :class: tip
