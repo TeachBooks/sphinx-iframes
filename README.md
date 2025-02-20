@@ -164,7 +164,7 @@ For example:
 
 #### Blending
 
-Blending can be enabled or disabled by using the classes `blend` and `no-blend`:
+Blending can be enabled or disabled by using the classes `blend` and `no-blend`. Results may differ depending on other extensions and CSS code.
 
 `````md
 ````{admonition} Enable blending
