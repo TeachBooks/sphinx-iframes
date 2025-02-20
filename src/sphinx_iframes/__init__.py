@@ -73,13 +73,17 @@ class IframeDirective(SphinxDirective):
             style = generate_style(
                 None, None,"auto",None
             )
+            check_style = style
         else:
             style = generate_style(
                 self.options.get("width", None), self.options.get("height", None),self.options.get("aspectratio",None),self.options.get("stylediv",None)
             )
+            check_style = generate_style(
+                self.options.get("width", None), self.options.get("height", None),self.options.get("aspectratio",None),None
+            )
         if style != '':
             style = 'style="%s"'%(style)
-        if ('width' in style) or ('height' in style) or ('aspect-ratio' in style):
+        if ('width' in check_style) or ('height' in check_style) or ('aspect-ratio' in check_style):
             add_user = True
         else:
             add_user = False
