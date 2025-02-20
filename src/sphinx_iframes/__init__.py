@@ -7,8 +7,7 @@ from docutils.parsers.rst import Directive, directives
 from docutils import nodes
 
 from sphinx.application import Sphinx
-from sphinx.util.docutils import SphinxDirective, SphinxRole
-from sphinx.util.typing import ExtensionMetadata
+from sphinx.util.docutils import SphinxDirective
 
 from typing import Optional
 
