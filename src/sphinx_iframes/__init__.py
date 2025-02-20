@@ -152,9 +152,11 @@ def setup(app: Sphinx):
 
 def write_css(app: Sphinx,exc):
     # now set the CSS
-    CSS_content = "div.video-container {\n\twidth: %s;\n\taspect-ratio: auto 16 / 9;\n\tbox-sizing: border-box;\n}\n\n"%(app.config.iframe_width)
+    CSS_content = "div.video-container {\n\tbox-sizing: border-box;\n}\n\n"
+    CSS_content += "div.video-container:not(.user) {\n\twidth: %s;\n\taspect-ratio: auto 16 / 9;\n}\n\n"%(app.config.iframe_width)
     CSS_content += "iframe.sphinx.video {\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n}\n\n"
-    CSS_content += "div.iframe-container {\n\twidth: %s;\n\taspect-ratio: %s;\n\tbox-sizing: border-box;\n}\n\n"%(app.config.iframe_width,app.config.iframe_aspectratio)
+    CSS_content += "div.iframe-container {\n\tbox-sizing: border-box;\n}\n\n"
+    CSS_content += "div.iframe-container:not(.user) {\n\twidth: %s;\n\taspect-ratio: %s;\n}\n\n"%(app.config.iframe_width,app.config.iframe_aspectratio)
     CSS_content += "div.iframe-container > iframe:not(.h5p) {\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n}\n\n"
     
     # add blend or no-blend option if required
