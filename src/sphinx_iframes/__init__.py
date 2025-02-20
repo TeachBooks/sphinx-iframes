@@ -16,13 +16,13 @@ def generate_style(width: Optional[str], height: Optional[str],aspectratio: Opti
      styles = ''
 
      if width:
-          styles += f'width: {width} !important;'
+          styles += f'width: {width};'
 
      if height:
-          styles += f'height: {height} !important;'
+          styles += f'height: {height};'
      
      if aspectratio:
-          styles += f'aspect-ratio: {aspectratio} !important;'
+          styles += f'aspect-ratio: {aspectratio};'
 
      if stylediv:
          styles += stylediv
