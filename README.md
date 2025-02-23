@@ -18,14 +18,14 @@ To use this extenstion, follow these steps:
 
 Install the module `sphinx-iframes` package using `pip`:
 ```
-pip install git+https://github.com/TeachBooks/sphinx-iframes.git
+pip install sphinx-iframes
 ```
     
 **Step 2: Add to `requirements.txt`**
 
 Make sure that the package is included in your project's `requirements.txt` to track the dependency:
 ```
-git+https://github.com/TeachBooks/sphinx-iframes.git
+sphinx-iframes
 ```
 
 **Step 3: Enable in `_config.yml`**
