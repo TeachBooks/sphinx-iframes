@@ -146,7 +146,7 @@ def setup(app: Sphinx):
     app.add_directive("iframe", IframeDirective)
     app.add_directive("h5p", IframeDirective)
     app.add_directive("video", IframeDirective)
-    # app.add_directive("iframe-figure", IframeFigure)
+    app.add_directive("iframe-figure", IframeFigure)
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.connect('builder-inited',include_js)
@@ -334,20 +334,25 @@ def write_js(app: Sphinx,exc):
         with open(filename,"w") as js:
             js.write(JS_content)
 
-# def IframeFigure(Figure):
-#     option_spec = Figure.option_spec.copy()
-#     required_arguments = 1
-#     optional_arguments = 0
-#     final_argument_whitespace = True
-#     option_spec.update(
-#         {
-#             'class': directives.class_option,
-#             "height": directives.unchanged,
-#             "width": directives.unchanged,
-#             "aspectratio": directives.unchanged,"stylediv": directives.unchanged,
-#             "styleframe": directives.unchanged
-#         }
-#     )
+class IframeFigure(Figure):
+    option_spec = Figure.option_spec.copy()
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec.update(
+        {
+            'class': directives.class_option,
+            "height": directives.unchanged,
+            "width": directives.unchanged,
+            "aspectratio": directives.unchanged,"stylediv": directives.unchanged,
+            "styleframe": directives.unchanged
+        }
+    )
     
-#     def run(self):
-#         (figure_node,) = Figure.run(self)
+    def run(self):
+        (figure_node,) = Figure.run(self)
+        iframe_html = generate_iframe_html(self)
+        iframe_node = nodes.raw(None, iframe_html, format="html")
+        figure_node.insert(0, iframe_node)
+
+        return [figure_node]
