@@ -108,28 +108,28 @@ def generate_iframe_html(source):
             iframe_html = '<div class="video-container user" %s>\n'%(style)
         else:
             iframe_html = '<div class="video-container" %s>\n'%(style)
-            iframe_html += f"""
-                <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-            """
-            iframe_html += '\n</div>'
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
     elif source.name == 'h5p':
         if add_user:
             iframe_html = '<div class="iframe-container user" %s>\n'%(style)
         else:
             iframe_html = '<div class="iframe-container" %s>\n'%(style)
-            iframe_html += f"""
-                <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-            """
-            iframe_html += '\n</div>'
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
     else:
         if add_user:
             iframe_html = '<div class="iframe-container user" %s>\n'%(style)
         else:
             iframe_html = '<div class="iframe-container" %s>\n'%(style)
-            iframe_html += f"""
-                <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-            """
-            iframe_html += '\n</div>'
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{source.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
 
     return iframe_html
     
