@@ -49,7 +49,7 @@ class IframeDirective(SphinxDirective):
 
         assert self.arguments[0] is not None
 
-        iframe_html = self.generate_iframe_html()
+        iframe_html = generate_iframe_html(self)
 
         iframe_node = nodes.raw(None, iframe_html, format="html")
         # paragraph_node = nodes.paragraph()
