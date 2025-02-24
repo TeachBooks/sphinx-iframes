@@ -9,7 +9,14 @@ This extension provides an interface to include iframes with relative ease, but 
 
 ## What does it do?
 
-This extension provides three Sphinx directives (`iframe`, `h5p`and `video`) that can be used to quickly insert an iframe with standard sizing and styling.
+This extension provides several Sphinx directives:
+
+- `iframe`
+- `h5p`
+- `video`
+- `iframe-figure`
+
+ that can be used to quickly insert an iframe with standard sizing and styling.
 
 ## Installation
 To use this extenstion, follow these steps:
@@ -106,6 +113,14 @@ Three new directives are provided:
 ```
 ````
 
+````md
+```{iframe-figure} <link_to_webpage_to_embed>
+:name: some:label
+
+The caption for the iframe.
+```
+````
+
 Note that you don't need the full embed code of an iframe. Only the source url should be used.
 
 All of these have the following options:
@@ -123,6 +138,8 @@ All of these have the following options:
   - Sets the style of the iframe. Use CSS compatible strings. Surround with " ".
 - `:stylediv:`
   - Sets the style of the surrounding div. Use CSS compatible strings. Surround with " ".
+
+The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 
 (sec:iframes:examples)=
 ## Examples and details

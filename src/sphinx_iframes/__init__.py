@@ -344,7 +344,8 @@ class IframeFigure(Figure):
             'class': directives.class_option,
             "height": directives.unchanged,
             "width": directives.unchanged,
-            "aspectratio": directives.unchanged,"stylediv": directives.unchanged,
+            "aspectratio": directives.unchanged,
+            "stylediv": directives.unchanged,
             "styleframe": directives.unchanged
         }
     )
