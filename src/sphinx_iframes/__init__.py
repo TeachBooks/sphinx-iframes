@@ -353,8 +353,6 @@ class IframeFigure(Figure):
         (figure_node,) = Figure.run(self)
         iframe_html = generate_iframe_html(self)
         iframe_node = nodes.raw(None, iframe_html, format="html")
-        print(figure_node[0])
-        figure_node.insert(0, iframe_node)
-        print(figure_node[0])
-        
+        figure_node[0] = iframe_node
+
         return [figure_node]
