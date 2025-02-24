@@ -47,6 +47,16 @@ class IframeDirective(SphinxDirective):
 
         assert self.arguments[0] is not None
 
+        iframe_html = self.generate_iframe_html()
+
+        iframe_node = nodes.raw(None, iframe_html, format="html")
+        # paragraph_node = nodes.paragraph()
+        # paragraph_node.insert(0, iframe_node)
+
+        return [iframe_node]
+
+    def generate_iframe_html(self):
+
         iframe_class = self.options.get("class")
 
         if self.name == "h5p":
@@ -119,11 +129,8 @@ class IframeDirective(SphinxDirective):
 		     """
              iframe_html += '\n</div>'
 
-        iframe_node = nodes.raw(None, iframe_html, format="html")
-        # paragraph_node = nodes.paragraph()
-        # paragraph_node.insert(0, iframe_node)
-
-        return [iframe_node]
+        return iframe_html
+    
     
 def include_js(app: Sphinx):
      
