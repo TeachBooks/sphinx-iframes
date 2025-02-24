@@ -96,7 +96,7 @@ sphinx:
 
 ### Directives
 
-Three new directives are provided:
+The following new directives are provided:
 
 ````md
 ```{iframe} <link_to_webpage_to_embed>
