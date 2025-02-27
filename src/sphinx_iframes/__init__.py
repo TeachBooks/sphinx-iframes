@@ -116,7 +116,7 @@ def generate_iframe_html(source):
                 if opt[0]=='v':
                     video = opt[1]
                 elif opt[0]=='t':
-                    options.append('start='+opt[1])
+                    options.insert(0,'start='+opt[1])
                 else:
                     options.append(combo)
             options = ';'.join(options)
