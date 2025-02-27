@@ -107,13 +107,34 @@ def generate_iframe_html(source):
     url = source.arguments[0]
     if 'youtube' in url:
         if 'watch?' in url:
-            tail = url[2+url.find('v='):]
-            index = tail.find('&')
-            if index>-1:
-                video = tail[:index]
+            tail = url[1+url.find('?')]
+            video = ''
+            options = ''
+            option = tail[:tail.find('=')]
+            next = tail.find('&')
+            if next==-1:
+                next = len(tail)-1
+            if option=='v':
+                video = tail[1+tail.find('='):next+1]
             else:
-                video = tail
-            url = 'https://www.youtube.com/embed/'+video
+                if len(options)>0:
+                    options += ';'
+                options += option + '=' + tail[1+tail.find('='):next+1]
+            tail = tail[next+1:]
+            while len(tail)>0:
+                option = tail[:tail.find('=')]
+                next = tail.find('&')
+                if next==-1:
+                    next = len(tail)-1
+                if option=='v':
+                    video = tail[1+tail.find('='):next+1]
+                else:
+                    if len(options)>0:
+                        options += ';'
+                    options += option + '=' + tail[1+tail.find('='):next+1]
+                tail = tail[next+1:]
+
+            url = 'https://www.youtube.com/embed/'+video+'?'+options
 
     if source.name == "video":
         if add_user:
