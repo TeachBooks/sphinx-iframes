@@ -122,6 +122,23 @@ def generate_iframe_html(source):
             options = ';'.join(options)
 
             url = 'https://www.youtube.com/embed/'+video+'?'+options
+    if 'youtu.be' in url:
+        tail = url[1+url.find('?'):]
+        base_video = url[:url.find('?')]
+        base_video = base_video.replace('.be','be.com/embed')
+        options = []
+        tail = tail.split('&')
+        for combo in tail:
+            opt = combo.split('=')
+            if opt[0]=='v':
+                video = opt[1]
+            elif opt[0]=='t':
+                options.insert(0,'start='+opt[1])
+            else:
+                options.append(combo)
+        options = ';'.join(options)
+
+        url = base_video+'?'+options
 
     if source.name == "video":
         if add_user:
