@@ -107,7 +107,7 @@ def generate_iframe_html(source):
     url = source.arguments[0]
     if 'youtube' in url:
         if 'watch?' in url:
-            tail = url[1+url.find('?')]
+            tail = url[1+url.find('?'):]
             video = ''
             options = ''
             option = tail[:tail.find('=')]
