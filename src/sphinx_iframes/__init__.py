@@ -134,7 +134,7 @@ def generate_iframe_html(source):
                 video = opt[1]
             elif opt[0]=='t':
                 options.insert(0,'start='+opt[1])
-            elif opt[0] != 'list'
+            elif opt[0] != 'list':
                 options.append(combo)
         options = ';'.join(options)
 
