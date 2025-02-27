@@ -111,8 +111,8 @@ def generate_iframe_html(source):
             video = ''
             options = ''
             option = tail[:tail.find('=')]
-            next = tail.find('&')
-            if next==-1:
+            next = tail.find('&')-1
+            if next==-2:
                 next = len(tail)-1
             if option=='v':
                 video = tail[1+tail.find('='):next+1]
@@ -123,8 +123,8 @@ def generate_iframe_html(source):
             tail = tail[next+1:]
             while len(tail)>0:
                 option = tail[:tail.find('=')]
-                next = tail.find('&')
-                if next==-1:
+                next = tail.find('&')-1
+                if next==-2:
                     next = len(tail)-1
                 if option=='v':
                     video = tail[1+tail.find('='):next+1]
