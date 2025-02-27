@@ -113,6 +113,8 @@ The following new directives are provided:
 ```
 ````
 
+In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided.
+
 ````md
 ```{iframe-figure} <link_to_webpage_to_embed>
 :name: some:label
