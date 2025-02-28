@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 
-from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst import directives
 
 from docutils import nodes
 
@@ -10,6 +10,12 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import SphinxDirective
 
 from typing import Optional
+
+from sphinx.directives.patches import Figure
+
+YOUTUBE_OPTIONS = [
+    "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
+]
 
 def generate_style(width: Optional[str], height: Optional[str],aspectratio: Optional[str],stylediv: Optional[str]):
 
@@ -47,83 +53,136 @@ class IframeDirective(SphinxDirective):
 
         assert self.arguments[0] is not None
 
-        iframe_class = self.options.get("class")
-
-        if self.name == "h5p":
-             base_class = "sphinx h5p blend"
-             if iframe_class is not None:
-                  if "no-blend" in iframe_class:
-                    base_class = "sphinx h5p"        
-        elif self.name == "video":
-             base_class = "sphinx video no-blend"
-             if iframe_class is not None:
-                  if "blend" in iframe_class and "not-blend" not in iframe_class:
-                    base_class = "sphinx video"
-        else:
-             base_class = "sphinx"
-
-        if iframe_class is None:
-            iframe_class = base_class
-        elif isinstance(iframe_class, list):
-            iframe_class = base_class+" "+" ".join(iframe_class)
-        else:
-            iframe_class = base_class+""+str(iframe_class)
-        
-        if self.name == 'h5p':
-            style = generate_style(
-                None, None,"auto",None
-            )
-            check_style = style
-        else:
-            style = generate_style(
-                self.options.get("width", None), self.options.get("height", None),self.options.get("aspectratio",None),self.options.get("stylediv",None)
-            )
-            check_style = generate_style(
-                self.options.get("width", None), self.options.get("height", None),self.options.get("aspectratio",None),None
-            )
-        if style != '':
-            style = 'style="%s"'%(style)
-        if ('width' in check_style) or ('height' in check_style) or ('aspect-ratio' in check_style):
-            add_user = True
-        else:
-            add_user = False
-        frame_style = self.options.get("styleframe",None)
-        if frame_style is not None:
-            frame_style = 'style="%s"'%(frame_style)
-
-        if self.name == "video":
-             if add_user:
-                iframe_html = '<div class="video-container user" %s>\n'%(style)
-             else:
-                iframe_html = '<div class="video-container" %s>\n'%(style)
-             iframe_html += f"""
-                 <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-		     """
-             iframe_html += '\n</div>'
-        elif self.name == 'h5p':
-             if add_user:
-                iframe_html = '<div class="iframe-container user" %s>\n'%(style)
-             else:
-                iframe_html = '<div class="iframe-container" %s>\n'%(style)
-             iframe_html += f"""
-                 <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-		     """
-             iframe_html += '\n</div>'
-        else:
-             if add_user:
-                iframe_html = '<div class="iframe-container user" %s>\n'%(style)
-             else:
-                iframe_html = '<div class="iframe-container" %s>\n'%(style)
-             iframe_html += f"""
-                 <iframe class="{iframe_class}" {frame_style} src="{self.arguments[0]}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
-		     """
-             iframe_html += '\n</div>'
+        iframe_html = generate_iframe_html(self)
 
         iframe_node = nodes.raw(None, iframe_html, format="html")
         # paragraph_node = nodes.paragraph()
         # paragraph_node.insert(0, iframe_node)
 
         return [iframe_node]
+
+def generate_iframe_html(source):
+
+    iframe_class = source.options.get("class")
+
+    if source.name == "h5p":
+        base_class = "sphinx h5p blend"
+        if iframe_class is not None:
+            if "no-blend" in iframe_class:
+                base_class = "sphinx h5p"        
+    elif source.name == "video":
+        base_class = "sphinx video no-blend"
+        if iframe_class is not None:
+            if "blend" in iframe_class and "not-blend" not in iframe_class:
+                base_class = "sphinx video"
+    else:
+            base_class = "sphinx"
+
+    if iframe_class is None:
+        iframe_class = base_class
+    elif isinstance(iframe_class, list):
+        iframe_class = base_class+" "+" ".join(iframe_class)
+    else:
+        iframe_class = base_class+""+str(iframe_class)
+    
+    if source.name == 'h5p':
+        style = generate_style(
+            None, None,"auto",None
+        )
+        check_style = style
+    else:
+        style = generate_style(
+            source.options.get("width", None), source.options.get("height", None),source.options.get("aspectratio",None),source.options.get("stylediv",None)
+        )
+        check_style = generate_style(
+            source.options.get("width", None), source.options.get("height", None),source.options.get("aspectratio",None),None
+        )
+    if style != '':
+        style = 'style="%s"'%(style)
+    if ('width' in check_style) or ('height' in check_style) or ('aspect-ratio' in check_style):
+        add_user = True
+    else:
+        add_user = False
+    frame_style = source.options.get("styleframe",None)
+    if frame_style is not None:
+        frame_style = 'style="%s"'%(frame_style)
+
+    # load source and check for validity
+    url = source.arguments[0]
+    if 'youtube' in url:
+        if 'watch?' in url:
+            tail = url[1+url.find('?'):]
+            list_index = tail.find('list=PL')
+            if list_index>0: # so list found and not a the beginning
+                # add a & before list if it is not present
+                if tail[list_index]!='&':
+                    tail = tail[:list_index] + '&' + tail[list_index:]
+            video = ''
+            options = []
+            tail = tail.split('&')
+            for combo in tail:
+                opt = combo.split('=')
+                if opt[0]=='v':
+                    video = opt[1]
+                elif opt[0]=='t':
+                    options.insert(0,'start='+opt[1])
+                elif opt[0] in YOUTUBE_OPTIONS:
+                    options.append(combo)
+            options = ';'.join(options)
+
+            url = 'https://www.youtube.com/embed/'+video+'?'+options
+    if 'youtu.be' in url:
+        tail = url[1+url.find('?'):]
+        if list_index>0: # so list found and not a the beginning
+            # add a & before list if it is not present
+            if tail[list_index]!='&':
+                tail = tail[:list_index] + '&' + tail[list_index:]
+        base_video = url[:url.find('?')]
+        base_video = base_video.replace('.be','be.com/embed')
+        options = []
+        tail = tail.split('&')
+        for combo in tail:
+            opt = combo.split('=')
+            if opt[0]=='v':
+                video = opt[1]
+            elif opt[0]=='t':
+                options.insert(0,'start='+opt[1])
+            elif opt[0] in YOUTUBE_OPTIONS:
+                options.append(combo)
+        options = ';'.join(options)
+
+        url = base_video+'?'+options
+
+    if source.name == "video":
+        if add_user:
+            iframe_html = '<div class="video-container user" %s>\n'%(style)
+        else:
+            iframe_html = '<div class="video-container" %s>\n'%(style)
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
+    elif source.name == 'h5p':
+        if add_user:
+            iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+        else:
+            iframe_html = '<div class="iframe-container" %s>\n'%(style)
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
+    else:
+        if add_user:
+            iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+        else:
+            iframe_html = '<div class="iframe-container" %s>\n'%(style)
+        iframe_html += f"""
+            <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
+        """
+        iframe_html += '\n</div>'
+
+    return iframe_html
+    
     
 def include_js(app: Sphinx):
      
@@ -137,6 +196,7 @@ def setup(app: Sphinx):
     app.add_directive("iframe", IframeDirective)
     app.add_directive("h5p", IframeDirective)
     app.add_directive("video", IframeDirective)
+    app.add_directive("iframe-figure", IframeFigure)
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.connect('builder-inited',include_js)
@@ -323,3 +383,27 @@ def write_js(app: Sphinx,exc):
         filename = os.path.join(staticdir,'h5p-resizer.js')
         with open(filename,"w") as js:
             js.write(JS_content)
+
+class IframeFigure(Figure):
+    option_spec = Figure.option_spec.copy()
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec.update(
+        {
+            'class': directives.class_option,
+            "height": directives.unchanged,
+            "width": directives.unchanged,
+            "aspectratio": directives.unchanged,
+            "stylediv": directives.unchanged,
+            "styleframe": directives.unchanged
+        }
+    )
+    
+    def run(self):
+        (figure_node,) = Figure.run(self)
+        iframe_html = generate_iframe_html(self)
+        iframe_node = nodes.raw(None, iframe_html, format="html")
+        figure_node[0] = iframe_node
+
+        return [figure_node]

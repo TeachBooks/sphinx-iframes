@@ -121,6 +121,8 @@ The following new directives are provided:
 ```
 ````
 
+In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided.
+
 ````md
 ```{iframe-figure} <link_to_webpage_to_embed>
 :name: some:label
@@ -146,6 +148,8 @@ All of these have the following options:
   - Sets the style of the iframe. Use CSS compatible strings. Surround with " ".
 - `:stylediv:`
   - Sets the style of the surrounding div. Use CSS compatible strings. Surround with " ".
+
+The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 
 (sec:iframes:examples)=
 ## Examples and details
