@@ -13,6 +13,10 @@ from typing import Optional
 
 from sphinx.directives.patches import Figure
 
+YOUTUBE_OPTIONS = [
+    "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
+]
+
 def generate_style(width: Optional[str], height: Optional[str],aspectratio: Optional[str],stylediv: Optional[str]):
 
      styles = ''
@@ -122,7 +126,7 @@ def generate_iframe_html(source):
                     video = opt[1]
                 elif opt[0]=='t':
                     options.insert(0,'start='+opt[1])
-                else:
+                elif opt[0] in YOUTUBE_OPTIONS:
                     options.append(combo)
             options = ';'.join(options)
 
@@ -143,7 +147,7 @@ def generate_iframe_html(source):
                 video = opt[1]
             elif opt[0]=='t':
                 options.insert(0,'start='+opt[1])
-            else:
+            elif opt[0] in YOUTUBE_OPTIONS:
                 options.append(combo)
         options = ';'.join(options)
 
