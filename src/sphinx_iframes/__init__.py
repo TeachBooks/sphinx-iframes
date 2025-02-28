@@ -13,6 +13,10 @@ from typing import Optional
 
 from sphinx.directives.patches import Figure
 
+YOUTUBE_OPTIONS = [
+    "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
+]
+
 def generate_style(width: Optional[str], height: Optional[str],aspectratio: Optional[str],stylediv: Optional[str]):
 
      styles = ''
@@ -108,6 +112,11 @@ def generate_iframe_html(source):
     if 'youtube' in url:
         if 'watch?' in url:
             tail = url[1+url.find('?'):]
+            list_index = tail.find('list=PL')
+            if list_index>0: # so list found and not a the beginning
+                # add a & before list if it is not present
+                if tail[list_index]!='&':
+                    tail = tail[:list_index] + '&' + tail[list_index:]
             video = ''
             options = []
             tail = tail.split('&')
@@ -117,13 +126,17 @@ def generate_iframe_html(source):
                     video = opt[1]
                 elif opt[0]=='t':
                     options.insert(0,'start='+opt[1])
-                else:
+                elif opt[0] in YOUTUBE_OPTIONS:
                     options.append(combo)
             options = ';'.join(options)
 
             url = 'https://www.youtube.com/embed/'+video+'?'+options
     if 'youtu.be' in url:
         tail = url[1+url.find('?'):]
+        if list_index>0: # so list found and not a the beginning
+            # add a & before list if it is not present
+            if tail[list_index]!='&':
+                tail = tail[:list_index] + '&' + tail[list_index:]
         base_video = url[:url.find('?')]
         base_video = base_video.replace('.be','be.com/embed')
         options = []
@@ -134,7 +147,7 @@ def generate_iframe_html(source):
                 video = opt[1]
             elif opt[0]=='t':
                 options.insert(0,'start='+opt[1])
-            else:
+            elif opt[0] in YOUTUBE_OPTIONS:
                 options.append(combo)
         options = ';'.join(options)
 
