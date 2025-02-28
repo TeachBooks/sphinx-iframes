@@ -1,11 +1,19 @@
-# Sphinx extension: Iframes
+# Iframes
+
+```{admonition} User types
+:class: tip
+This section is useful for user type 3-5.
+```
++++
+{bdg-primary}`Sphinx Extension`
 
 ## Introduction
 
 This extension provides an interface to include iframes with relative ease, but does try to provide manners to interact with the various options. This rests purely by setting default CSS values, that the user can overwrite if preferred for individual iframes, but also globally. In general, each `iframe` is embedded within a `div` element, which eases sizing.
 
-> [!NOTE]
-> Using CSS is complicated and error prone, so always check and never expect that you get what you want.
+::::{note}
+Using CSS is complicated and error prone, so always check and never expect that you get what you want.
+::::
 
 ## What does it do?
 
@@ -146,7 +154,268 @@ The directive `iframe-figure` also inherits all options from the `figure` direct
 (sec:iframes:examples)=
 ## Examples and details
 
-To see examples of usage visit [this page in the TeachBooks manual](https://teachbooks.io/manual/external/Sphinx-Iframes/README.html).
+### `iframe` directive
+
+To clearly show the blending and sizing, we showcase everthing in a general titled admonition.
+
+#### Default behavior
+
+For use inline or in other directives and admonitions, iframes can be added using the following syntax:
+
+````md
+```{iframe} <link_to_webpage_to_embed>
+```
+````
+
+For example:
+
+`````md
+````{admonition} Default
+```{iframe} ./some_content/element_pdf_and_cdf.html
+```
+````
+`````
+
+````{admonition} Default
+```{iframe} ./some_content/element_pdf_and_cdf.html
+```
+````
+
+#### Blending
+
+Blending can be enabled or disabled by using the classes `blend` and `no-blend`. Results may differ depending on other extensions and CSS code.
+
+`````md
+````{admonition} Enable blending
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:class: blend
+```
+````
+`````
+
+````{admonition} Enable blending
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:class: blend
+```
+````
+
+`````md
+````{admonition} Disable blending
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:class: no-blend
+```
+````
+`````
+
+````{admonition} Disable blending
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:class: no-blend
+```
+````
+
+#### Sizing aspects
+
+The size of the shown iframe can be controlled with atmost two out the following three options:
+
+- `width`: Sets the width of the iframe. Use CSS compatible strings.
+- `height`: Sets the height of the iframe. Use CSS compatible strings.
+- `aspectratio`: Sets the aspect ratio of the iframe. Use CSS compatible strings.
+
+These options will be applied to the encapsulating `div` element.
+
+::::{note}
+Using CSS is complicated and error prone, so always check and never expect that you get what you want.
+::::
+
+::::{warning}
+This extension does not check the validity of the given options, nor checks whether at most two options are entered.
+::::
+
+`````md
+````{admonition} Width and height
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:width: 600px
+:height: 200px
+```
+````
+`````
+
+````{admonition} Width and height
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:width: 600px
+:height: 200px
+```
+````
+
+`````md
+````{admonition} Width and aspect ratio
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:width: 600px
+:aspectratio: 2 / 3
+```
+````
+`````
+
+````{admonition} Width and aspect ratio
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:width: 200px
+:aspectratio: 2 / 3
+```
+````
+
+`````md
+````{admonition} Height and aspect ratio
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:height: 150px
+:aspectratio: 2 / 2
+```
+````
+`````
+
+````{admonition} Height and aspect ratio
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:height: 150px
+:aspectratio: 2 / 2
+```
+````
+
+#### Styling aspects
+
+The style of the shown iframe can be controlled with two options:
+
+- `styleframe`: Sets the style of the iframe. Use CSS compatible strings. Include surround with `" "`.
+- `stylediv`: Sets the style of surrounding div. Use CSS compatible strings. Include surround with `" "`.
+
+::::{note}
+Using CSS is complicated and error prone, so always check and never expect that you get what you want.
+::::
+
+::::{warning}
+This extension does not check the validity of the given option.
+::::
+
+`````md
+````{admonition} iframe styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
+```
+````
+`````
+
+````{admonition} iframe styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
+```
+````
+
+`````md
+````{admonition} div styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
+```
+````
+`````
+
+````{admonition} div styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
+```
+````
+
+`````md
+````{admonition} iframe and div styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
+:stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
+```
+````
+`````
+
+````{admonition} iframe and div styling
+```{iframe} ./some_content/element_pdf_and_cdf.html
+:styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
+:stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
+```
+````
+
+### `h5p` directive
+
+For iframes intended for H5P elements, the code
+
+`````md
+````{admonition} H5P example
+```{iframe} https://tudelft.h5p.com/content/1292011179114024347/embed
+:class: blend
+:aspectratio: auto
+```
+````
+`````
+
+can be reduced to
+
+`````md
+````{admonition} H5P example
+```{h5p} https://tudelft.h5p.com/content/1292011179114024347/embed
+```
+````
+`````
+
+resulting in
+
+````{admonition} H5P example
+```{h5p} https://tudelft.h5p.com/content/1292011179114024347/embed
+```
+````
+
+Note that you don't need the full embed code as provided by H5P. Only the source url (often with the following syntax `https://<h5p_host_server>/content/<h5p_element_id>/embed`) should be used. This url can be obtained from the url in your H5P application with an addtional `/embed`, or in the html-embed-code.
+
+### `video` directive
+
+For iframes intended for videos, the code
+
+`````md
+````{admonition} video example
+```{iframe} https://www.youtube.com/embed/B1J6Ou4q8vE?si=XZDT83fcR6W3Dxut
+:class: no-blend
+:styleframe: "background: transparent;"
+:aspectratio: auto 16 / 9
+```
+````
+`````
+
+can be reduced to
+
+`````md
+````{admonition} video example
+```{video} https://www.youtube.com/embed/B1J6Ou4q8vE?si=XZDT83fcR6W3Dxut
+```
+````
+`````
+
+resulting in
+
+````{admonition} video example
+```{video} https://www.youtube.com/embed/B1J6Ou4q8vE?si=XZDT83fcR6W3Dxut
+```
+````
+
+### `iframe-figure` directive
+
+In {numref}`some:label` you can find the result of the below code. The reference is made using `{numref}` and label behind `:name:`.
+
+`````md
+````{iframe-figure} ./some_content/element_pdf_and_cdf.html
+:name: some:label
+
+The caption for the iframe.
+````
+`````
+
+```{iframe-figure} ./some_content/element_pdf_and_cdf.html
+:name: some:label
+ 
+The caption for the iframe.
+```
 
 ## Contribute
 
