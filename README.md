@@ -392,7 +392,16 @@ can be reduced to
 ````
 `````
 
-resulting in
+or it can take the regular YouTube URL:
+
+`````md
+````{admonition} video example
+```{video} https://www.youtube.com/watch/B1J6Ou4q8vE
+```
+````
+`````
+
+resulting both in
 
 ````{admonition} video example
 ```{video} https://www.youtube.com/embed/B1J6Ou4q8vE?si=XZDT83fcR6W3Dxut
