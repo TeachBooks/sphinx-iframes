@@ -1,5 +1,4 @@
-# Iframes
-
+````{margin}
 ```{attributiongrey} Attribution
 :class: attribution
 This page reuses MIT licensed content from {cite:t}`sphinx-iframes`. {fa}`quote-left`{ref}`Find out more here.<external_resources>`
@@ -12,7 +11,9 @@ This section is useful for user type 3-5.
 +++
 {bdg-primary}`Sphinx Extension`
 
-## Introduction
+````
+
+# Iframes
 
 This extension provides an interface to include iframes with relative ease, but does try to provide manners to interact with the various options. This rests purely by setting default CSS values, that the user can overwrite if preferred for individual iframes, but also globally. In general, each `iframe` is embedded within a `div` element, which eases sizing.
 
