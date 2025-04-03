@@ -146,7 +146,7 @@ The directive `iframe-figure` also inherits all options from the `figure` direct
 (sec:iframes:examples)=
 ## Examples and details
 
-To see examples of usage visit [this page in the TeachBooks manual](https://teachbooks.io/manual/external/Sphinx-Iframes/README.html).
+To see examples of usage visit [this page in the TeachBooks manual](https://teachbooks.io/manual/external/sphinx-iframes/README.html).
 
 ## Contribute
 
