@@ -113,7 +113,7 @@ The following new directives are provided:
 ```
 ````
 
-In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided.
+In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided. H5p links are converted too if provided without `/embed`.
 
 ````md
 ```{iframe-figure} <link_to_webpage_to_embed>
