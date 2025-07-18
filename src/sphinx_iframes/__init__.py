@@ -153,6 +153,13 @@ def generate_iframe_html(source):
 
         url = base_video+'?'+options
 
+    # Handle H5P URLs - add /embed if not present
+    if source.name == 'h5p':
+        if '/embed' not in url and url.endswith('/'):
+            url = url + 'embed'
+        elif '/embed' not in url and not url.endswith('/'):
+            url = url + '/embed'
+
     if source.name == "video":
         if add_user:
             iframe_html = '<div class="video-container user" %s>\n'%(style)
