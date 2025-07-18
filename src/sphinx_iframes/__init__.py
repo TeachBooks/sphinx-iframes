@@ -401,6 +401,9 @@ class IframeFigure(Figure):
     )
     
     def run(self):
+        label = self.options.pop('label', None)
+        if label is not None:
+            self.options.set('name', label)
         (figure_node,) = Figure.run(self)
         iframe_html = generate_iframe_html(self)
         iframe_node = nodes.raw(None, iframe_html, format="html")
