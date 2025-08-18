@@ -46,7 +46,8 @@ class IframeDirective(SphinxDirective):
         "width": directives.unchanged,
         "aspectratio": directives.unchanged,
         "stylediv": directives.unchanged,
-        "styleframe": directives.unchanged
+        "styleframe": directives.unchanged,
+        "divclass": directives.class_option
     }
 
     def run(self) -> list[nodes.Node]:
@@ -63,6 +64,11 @@ class IframeDirective(SphinxDirective):
 
 def generate_iframe_html(source):
 
+    div_class = source.options.get("divclass", None)
+    if div_class is not None:
+        div_class = " ".join(div_class) if isinstance(div_class, list) else str(div_class)
+    else:
+        div_class = ""
     iframe_class = source.options.get("class")
 
     if source.name == "h5p":
@@ -162,27 +168,27 @@ def generate_iframe_html(source):
 
     if source.name == "video":
         if add_user:
-            iframe_html = '<div class="video-container user" %s>\n'%(style)
+            iframe_html = '<div class="video-container user %s" %s>\n'%(div_class, style)
         else:
-            iframe_html = '<div class="video-container" %s>\n'%(style)
+            iframe_html = '<div class="video-container %s" %s>\n'%(div_class, style)
         iframe_html += f"""
             <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
         """
         iframe_html += '\n</div>'
     elif source.name == 'h5p':
         if add_user:
-            iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+            iframe_html = '<div class="iframe-container user %s" %s>\n'%(div_class, style)
         else:
-            iframe_html = '<div class="iframe-container" %s>\n'%(style)
+            iframe_html = '<div class="iframe-container %s" %s>\n'%(div_class, style)
         iframe_html += f"""
             <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
         """
         iframe_html += '\n</div>'
     else:
         if add_user:
-            iframe_html = '<div class="iframe-container user" %s>\n'%(style)
+            iframe_html = '<div class="iframe-container user %s" %s>\n'%(div_class, style)
         else:
-            iframe_html = '<div class="iframe-container" %s>\n'%(style)
+            iframe_html = '<div class="iframe-container %s" %s>\n'%(div_class, style)
         iframe_html += f"""
             <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
         """

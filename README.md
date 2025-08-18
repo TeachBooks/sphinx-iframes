@@ -130,6 +130,8 @@ All of these have the following options:
 - `:class:`
   - If further CSS styling is needed, then use this option to append a CSS class name to the rendered iframe.
   - We recommend to only use the classes `blend` and `no-blend`, see [](sec:iframes:examples).
+- `:divclass:`
+  - If further CSS styling is needed, then use this option to append a CSS class name to the div surrounding the iframe.
 - `:width:`
   - Sets the width of the iframe. Use CSS compatible strings.
 - `:height:`
