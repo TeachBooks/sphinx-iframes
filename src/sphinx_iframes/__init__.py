@@ -17,6 +17,9 @@ YOUTUBE_OPTIONS = [
     "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
 ]
 
+class iframe_node(nodes.raw):
+    pass
+
 def generate_style(width: Optional[str], height: Optional[str],aspectratio: Optional[str],stylediv: Optional[str]):
 
      styles = ''
@@ -56,11 +59,11 @@ class IframeDirective(SphinxDirective):
 
         iframe_html = generate_iframe_html(self)
 
-        iframe_node = nodes.raw(None, iframe_html, format="html")
+        node = iframe_node(None, iframe_html, format="html")
         # paragraph_node = nodes.paragraph()
         # paragraph_node.insert(0, iframe_node)
 
-        return [iframe_node]
+        return [node]
 
 def generate_iframe_html(source):
 
@@ -419,7 +422,7 @@ class IframeFigure(Figure):
             self.options.set('name', label)
         (figure_node,) = Figure.run(self)
         iframe_html = generate_iframe_html(self)
-        iframe_node = nodes.raw(None, iframe_html, format="html")
-        figure_node[0] = iframe_node
+        node = iframe_node(None, iframe_html, format="html")
+        figure_node[0] = node
 
         return [figure_node]
