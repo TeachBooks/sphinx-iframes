@@ -122,7 +122,7 @@ def generate_iframe_html(source):
         if 'watch?' in url:
             tail = url[1+url.find('?'):]
             list_index = tail.find('list=PL')
-            if list_index>0: # so list found and not a the beginning
+            if list_index>0: # so list found and not at the beginning
                 # add a & before list if it is not present
                 if tail[list_index]!='&':
                     tail = tail[:list_index] + '&' + tail[list_index:]
@@ -142,12 +142,18 @@ def generate_iframe_html(source):
             url = 'https://www.youtube.com/embed/'+video+'?'+options
     if 'youtu.be' in url:
         tail = url[1+url.find('?'):]
-        if list_index>0: # so list found and not a the beginning
+        list_index = tail.find('list=PL')
+        if list_index>0: # so list found and not at the beginning
             # add a & before list if it is not present
             if tail[list_index]!='&':
                 tail = tail[:list_index] + '&' + tail[list_index:]
-        base_video = url[:url.find('?')]
+        question_mark_index = url.find('?')
+        if question_mark_index>=0:
+            base_video = url[:question_mark_index]
+        else:
+            base_video = url
         base_video = base_video.replace('.be','be.com/embed')
+        print(f"[sphinx-iframes] Converted youtu.be URL to {base_video}")
         options = []
         tail = tail.split('&')
         for combo in tail:
