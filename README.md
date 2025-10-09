@@ -115,6 +115,8 @@ The following new directives are provided:
 
 In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided. H5p links are converted too if provided without `/embed`.
 
+For the `video` directive, if a direct link to a video file is provided (e.g. ending on `.mp4`, `.webm` or `.ogg`), then the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) is used. If any other link is provided, then an iframe is generated.
+
 ````md
 ```{iframe-figure} <link_to_webpage_to_embed>
 :name: some:label
@@ -142,6 +144,8 @@ All of these have the following options:
   - Sets the style of the iframe. Use CSS compatible strings. Surround with " ".
 - `:stylediv:`
   - Sets the style of the surrounding div. Use CSS compatible strings. Surround with " ".
+
+For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
 
 The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 

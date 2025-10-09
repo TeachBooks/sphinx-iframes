@@ -12,7 +12,8 @@ authors = [
     { name = "Dennis den Ouden-van der Horst", email = "d.denouden-vanderhorst@tudelft.nl" }
 ]
 dependencies = [
-    "sphinx"
+    "sphinx",
+    "sphinxcontrib-video"
 ]
 
 requires-python = ">=3.10"
