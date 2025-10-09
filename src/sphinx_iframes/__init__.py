@@ -13,6 +13,8 @@ from typing import Optional
 
 from sphinx.directives.patches import Figure
 
+from sphinxcontrib.video import Video
+
 YOUTUBE_OPTIONS = [
     "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
 ]
@@ -57,6 +59,22 @@ class IframeDirective(SphinxDirective):
 
         assert self.arguments[0] is not None
 
+        # discriminate between mp4, webm, ogg and other urls for the video directive
+        if self.name == "video":
+            if self.arguments[0].lower().endswith('.mp4') or self.arguments[0].lower().endswith('.webm') or self.arguments[0].lower().endswith('.ogg'):
+                video_directive = Video(
+                    self.name,
+                    self.arguments,
+                    self.options,
+                    self.content,
+                    self.lineno,
+                    self.content_offset,
+                    self.block_text,
+                    self.state,
+                    self.state_machine,
+                )
+                return video_directive.run()
+        # At this point we know we have to use the iframe, as it is not a video file or not a video directive
         iframe_html = generate_iframe_html(self)
 
         node = iframe_node(None, iframe_html, format="html")
@@ -215,10 +233,12 @@ def include_js(app: Sphinx):
 
 def setup(app: Sphinx):
 
+    app.setup_extension('sphinxcontrib.video')
+
     app.add_directive("iframe", IframeDirective)
-    app.add_directive("h5p", IframeDirective)
-    app.add_directive("video", IframeDirective)
     app.add_directive("iframe-figure", IframeFigure)
+    app.add_directive("h5p", IframeDirective)
+    app.add_directive("video", IframeDirective,override=True) # override any other video directive
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.connect('builder-inited',include_js)
