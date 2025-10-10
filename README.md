@@ -426,7 +426,7 @@ If a link ending with `.mp4`, `.webm` or `.ogg` is provided, then the `video` di
 
 `````md
 ````{admonition} video file example
-```{video} https://download.samplelib.com/mp4/sample-5s.mp4
+```{video} https://www.w3schools.com/html/mov_bbb.mp4
 ```
 ````
 `````
@@ -434,7 +434,7 @@ If a link ending with `.mp4`, `.webm` or `.ogg` is provided, then the `video` di
 resulting in
 
 ````{admonition} video file example
-```{video} https://download.samplelib.com/mp4/sample-5s.mp4
+```{video} https://www.w3schools.com/html/mov_bbb.mp4
 ```
 ````
 
