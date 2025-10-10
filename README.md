@@ -131,6 +131,8 @@ The following new directives are provided:
 
 In case of a YouTube-link, it is inverted to an embed link if the normal web URL is provided. H5p links are converted too if provided without `/embed`.
 
+For the `video` directive, if a direct link to a video file is provided (e.g. ending on `.mp4`, `.webm` or `.ogg`), then the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) is used. If any other link is provided, then an iframe is generated.
+
 ````md
 ```{iframe-figure} <link_to_webpage_to_embed>
 :name: some:label
@@ -159,6 +161,8 @@ All of these have the following options:
 - `:stylediv:`
   - Sets the style of the surrounding div. Use CSS compatible strings. Surround with " ".
 
+For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
+
 The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 
 (sec:iframes:examples)=
@@ -181,13 +185,13 @@ For example:
 
 `````md
 ````{admonition} Default
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 ```
 ````
 `````
 
 ````{admonition} Default
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 ```
 ````
 
@@ -197,28 +201,28 @@ Blending can be enabled or disabled by using the classes `blend` and `no-blend`.
 
 `````md
 ````{admonition} Enable blending
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :class: blend
 ```
 ````
 `````
 
 ````{admonition} Enable blending
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :class: blend
 ```
 ````
 
 `````md
 ````{admonition} Disable blending
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :class: no-blend
 ```
 ````
 `````
 
 ````{admonition} Disable blending
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :class: no-blend
 ```
 ````
@@ -243,7 +247,7 @@ This extension does not check the validity of the given options, nor checks whet
 
 `````md
 ````{admonition} Width and height
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :width: 600px
 :height: 200px
 ```
@@ -251,7 +255,7 @@ This extension does not check the validity of the given options, nor checks whet
 `````
 
 ````{admonition} Width and height
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :width: 600px
 :height: 200px
 ```
@@ -259,7 +263,7 @@ This extension does not check the validity of the given options, nor checks whet
 
 `````md
 ````{admonition} Width and aspect ratio
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :width: 600px
 :aspectratio: 2 / 3
 ```
@@ -267,7 +271,7 @@ This extension does not check the validity of the given options, nor checks whet
 `````
 
 ````{admonition} Width and aspect ratio
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :width: 200px
 :aspectratio: 2 / 3
 ```
@@ -275,7 +279,7 @@ This extension does not check the validity of the given options, nor checks whet
 
 `````md
 ````{admonition} Height and aspect ratio
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :height: 150px
 :aspectratio: 2 / 2
 ```
@@ -283,7 +287,7 @@ This extension does not check the validity of the given options, nor checks whet
 `````
 
 ````{admonition} Height and aspect ratio
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :height: 150px
 :aspectratio: 2 / 2
 ```
@@ -306,35 +310,35 @@ This extension does not check the validity of the given option.
 
 `````md
 ````{admonition} iframe styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
 ```
 ````
 `````
 
 ````{admonition} iframe styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
 ```
 ````
 
 `````md
 ````{admonition} div styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
 ```
 ````
 `````
 
 ````{admonition} div styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
 ```
 ````
 
 `````md
 ````{admonition} iframe and div styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
 :stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
 ```
@@ -342,7 +346,7 @@ This extension does not check the validity of the given option.
 `````
 
 ````{admonition} iframe and div styling
-```{iframe} ./some_content/element_pdf_and_cdf.html
+```{iframe} https://teachbooks.io/
 :styleframe: "border-style: dotted;border-color: #0047AB;border-width:5px;"
 :stylediv: "border-style: dashed;border-color: olive;border-width:20px;"
 ```
@@ -418,19 +422,35 @@ resulting both in
 ```
 ````
 
+If a link ending with `.mp4`, `.webm` or `.ogg` is provided, then the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) is used. For example:
+
+`````md
+````{admonition} video file example
+```{video} https://download.samplelib.com/mp4/sample-5s.mp4
+```
+````
+`````
+
+resulting in
+
+````{admonition} video file example
+```{video} https://download.samplelib.com/mp4/sample-5s.mp4
+```
+````
+
 ### `iframe-figure` directive
 
 In {numref}`some:label` you can find the result of the below code. The reference is made using `{numref}` and label behind `:name:`.
 
 `````md
-````{iframe-figure} ./some_content/element_pdf_and_cdf.html
+````{iframe-figure} https://teachbooks.io/
 :name: some:label
 
 The caption for the iframe.
 ````
 `````
 
-```{iframe-figure} ./some_content/element_pdf_and_cdf.html
+```{iframe-figure} https://teachbooks.io/
 :name: some:label
  
 The caption for the iframe.
@@ -439,4 +459,4 @@ The caption for the iframe.
 ## Contribute
 
 This tool's repository is stored on [GitHub](https://github.com/TeachBooks/sphinx-iframes). If you'd like to contribute, you can create a fork and open a pull request on the [GitHub repository](https://github.com/TeachBooks/sphinx-iframes).
-The `README.md` of the branch `Manual` is also part of the TeachBooks manual (this file) as a submodule.
+The `README.md` of the branch `Manual` is also part of the TeachBooks manual as a submodule.

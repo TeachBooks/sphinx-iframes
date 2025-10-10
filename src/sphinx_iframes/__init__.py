@@ -13,9 +13,14 @@ from typing import Optional
 
 from sphinx.directives.patches import Figure
 
+from sphinxcontrib.video import Video
+
 YOUTUBE_OPTIONS = [
     "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
 ]
+
+class iframe_node(nodes.raw):
+    pass
 
 def generate_style(width: Optional[str], height: Optional[str],aspectratio: Optional[str],stylediv: Optional[str]):
 
@@ -54,13 +59,29 @@ class IframeDirective(SphinxDirective):
 
         assert self.arguments[0] is not None
 
+        # discriminate between mp4, webm, ogg and other urls for the video directive
+        if self.name == "video":
+            if self.arguments[0].lower().endswith('.mp4') or self.arguments[0].lower().endswith('.webm') or self.arguments[0].lower().endswith('.ogg'):
+                video_directive = Video(
+                    self.name,
+                    self.arguments,
+                    self.options,
+                    self.content,
+                    self.lineno,
+                    self.content_offset,
+                    self.block_text,
+                    self.state,
+                    self.state_machine,
+                )
+                return video_directive.run()
+        # At this point we know we have to use the iframe, as it is not a video file or not a video directive
         iframe_html = generate_iframe_html(self)
 
-        iframe_node = nodes.raw(None, iframe_html, format="html")
+        node = iframe_node(None, iframe_html, format="html")
         # paragraph_node = nodes.paragraph()
         # paragraph_node.insert(0, iframe_node)
 
-        return [iframe_node]
+        return [node]
 
 def generate_iframe_html(source):
 
@@ -119,7 +140,7 @@ def generate_iframe_html(source):
         if 'watch?' in url:
             tail = url[1+url.find('?'):]
             list_index = tail.find('list=PL')
-            if list_index>0: # so list found and not a the beginning
+            if list_index>0: # so list found and not at the beginning
                 # add a & before list if it is not present
                 if tail[list_index]!='&':
                     tail = tail[:list_index] + '&' + tail[list_index:]
@@ -139,12 +160,18 @@ def generate_iframe_html(source):
             url = 'https://www.youtube.com/embed/'+video+'?'+options
     if 'youtu.be' in url:
         tail = url[1+url.find('?'):]
-        if list_index>0: # so list found and not a the beginning
+        list_index = tail.find('list=PL')
+        if list_index>0: # so list found and not at the beginning
             # add a & before list if it is not present
             if tail[list_index]!='&':
                 tail = tail[:list_index] + '&' + tail[list_index:]
-        base_video = url[:url.find('?')]
+        question_mark_index = url.find('?')
+        if question_mark_index>=0:
+            base_video = url[:question_mark_index]
+        else:
+            base_video = url
         base_video = base_video.replace('.be','be.com/embed')
+        print(f"[sphinx-iframes] Converted youtu.be URL to {base_video}")
         options = []
         tail = tail.split('&')
         for combo in tail:
@@ -206,10 +233,12 @@ def include_js(app: Sphinx):
 
 def setup(app: Sphinx):
 
+    app.setup_extension('sphinxcontrib.video')
+
     app.add_directive("iframe", IframeDirective)
-    app.add_directive("h5p", IframeDirective)
-    app.add_directive("video", IframeDirective)
     app.add_directive("iframe-figure", IframeFigure)
+    app.add_directive("h5p", IframeDirective)
+    app.add_directive("video", IframeDirective,override=True) # override any other video directive
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.connect('builder-inited',include_js)
@@ -419,7 +448,7 @@ class IframeFigure(Figure):
             self.options.set('name', label)
         (figure_node,) = Figure.run(self)
         iframe_html = generate_iframe_html(self)
-        iframe_node = nodes.raw(None, iframe_html, format="html")
-        figure_node[0] = iframe_node
+        node = iframe_node(None, iframe_html, format="html")
+        figure_node[0] = node
 
         return [figure_node]
