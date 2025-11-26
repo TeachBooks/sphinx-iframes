@@ -2,9 +2,8 @@
 
 This extension provides an interface to include iframes with relative ease, but does try to provide manners to interact with the various options. This rests purely by setting default CSS values, that the user can overwrite if preferred for individual iframes, but also globally. In general, each `iframe` is embedded within a `div` element, which eases sizing.
 
-::::{note}
-Using CSS is complicated and error prone, so always check and never expect that you get what you want.
-::::
+> [!NOTE]
+> Using CSS is complicated and error prone, so always check and never expect that you get what you want.
 
 ## What does it do?
 
