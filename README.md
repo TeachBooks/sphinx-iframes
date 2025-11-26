@@ -154,7 +154,6 @@ For the directive `video`, if a direct link to a video file is given, then only 
 
 The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 
-(sec:iframes:examples)=
 ## Examples and details
 
 See [Iframes - TeachBooks Manual](https://teachbooks.io/manual/external/sphinx-iframes/README.html).
