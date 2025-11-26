@@ -35,7 +35,7 @@ This extension provides several Sphinx directives:
  that can be used to quickly insert an iframe with standard sizing and styling.
 
 ## Installation
-To use this extenstion, follow these steps:
+To use this extension, follow these steps:
 
 **Step 1: Install the Package**
 
@@ -93,7 +93,7 @@ sphinx:
   - if `false` all non-blended iframes will have background a colored background and no inversion for dark-mode is applied.
   - there's no need to set the blend or no-blend for individual iframes if it's set in the `_config.yml`, unless you want to deviate from the setting set there.
 - `iframe_saturation`: `1.5` (_default_) or **float**:
-  - Blended iframes are inverted in darkmode using the CSS filter `invert(1) hue-rotate(180deg) saturation(iframe_saturation)`.
+  - Blended iframes are inverted in dark mode using the CSS filter `invert(1) hue-rotate(180deg) saturation(iframe_saturation)`.
 - `iframe_h5p_autoresize`: `true` (_default_) or `false`:
   - if `true` all h5p iframes are automagically resized to fit the element in which the iframe is loaded.
   - if `false` no h5p iframes are automagically resized to fit the element in which the iframe is loaded.
@@ -101,7 +101,7 @@ sphinx:
   - sets the standard background color of non-blended iframes.
   - Any CSS string defining colors can be used, see [<color> CSS data type](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value).
   - Surround with `" "` for hex strings.
-  - Only visible if the content of the iframes has a transparant background. 
+  - Only visible if the content of the iframes has a transparent background. 
 - `iframe_width`:  `calc(100% - 2.8rem)` (_default_) or **CSS string**:
   - sets the standard width of the iframe within the parent element;
   - Any CSS string defining a width can be used, see [width CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
@@ -170,8 +170,6 @@ All of these have the following options:
 
 For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
 
-For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
-
 The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
 
 (sec:iframes:examples)=
@@ -179,7 +177,7 @@ The directive `iframe-figure` also inherits all options from the `figure` direct
 
 ### `iframe` directive
 
-To clearly show the blending and sizing, we showcase everthing in a general titled admonition.
+To clearly show the blending and sizing, we showcase everything in a general titled admonition.
 
 #### Default behavior
 
@@ -238,7 +236,7 @@ Blending can be enabled or disabled by using the classes `blend` and `no-blend`.
 
 #### Sizing aspects
 
-The size of the shown iframe can be controlled with atmost two out the following three options:
+The size of the shown iframe can be controlled with at most two out the following three options:
 
 - `width`: Sets the width of the iframe. Use CSS compatible strings.
 - `height`: Sets the height of the iframe. Use CSS compatible strings.
@@ -390,7 +388,7 @@ resulting in
 ```
 ````
 
-Note that you don't need the full embed code as provided by H5P. Only the source url (often with the following syntax `https://<h5p_host_server>/content/<h5p_element_id>/embed`) should be used. This url can be obtained from the url in your H5P application with an addtional `/embed`, or in the html-embed-code.
+Note that you don't need the full embed code as provided by H5P. Only the source url (often with the following syntax `https://<h5p_host_server>/content/<h5p_element_id>/embed`) should be used. This url can be obtained from the url in your H5P application with an additional `/embed`, or in the html-embed-code.
 
 ### `video` directive
 
