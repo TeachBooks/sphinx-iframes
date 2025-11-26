@@ -8,12 +8,15 @@ from docutils import nodes
 
 from sphinx.application import Sphinx
 from sphinx.util.docutils import SphinxDirective
+from sphinx.util import logging
 
 from typing import Optional
 
 from sphinx.directives.patches import Figure
 
 from sphinxcontrib.video import Video
+
+logger = logging.getLogger(__name__)
 
 YOUTUBE_OPTIONS = [
     "autoplay","cc_lang_pref","cc_load_policy","color","controls","disablekb","enablejsapi","end","fs","hl","iv_load_policy","list","listType","loop","modestbranding","origin","playlist","playsinline","rel","start","widget_referrer"
@@ -52,7 +55,8 @@ class IframeDirective(SphinxDirective):
         "aspectratio": directives.unchanged,
         "stylediv": directives.unchanged,
         "styleframe": directives.unchanged,
-        "divclass": directives.class_option
+        "divclass": directives.class_option,
+        "iframe_loading": directives.unchanged,
     }
 
     def run(self) -> list[nodes.Node]:
@@ -84,6 +88,14 @@ class IframeDirective(SphinxDirective):
         return [node]
 
 def generate_iframe_html(source):
+
+    loadmethod = source.options.get("iframe_loading",None)
+    if loadmethod is None:
+        loadmethod = source.state.document.settings.env.app.config.iframe_loading
+    if loadmethod not in ['lazy','eager']:
+        # throw a warning that the value is not correct and is set to defined default
+        logger.warning(f"[sphinx-iframes] 'iframe_loading' option value '{loadmethod}' is not valid. Setting to '{source.state.document.settings.env.app.config.iframe_loading}'.")
+        loadmethod = source.state.document.settings.env.app.config.iframe_loading
 
     div_class = source.options.get("divclass", None)
     if div_class is not None:
@@ -241,7 +253,9 @@ def setup(app: Sphinx):
     app.add_directive("video", IframeDirective,override=True) # override any other video directive
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
+    app.add_config_value("iframe_loading","lazy",'env')
     app.connect('builder-inited',include_js)
+    app.connect('config-inited',validate_config)
 
     app.add_config_value("iframe_blend",True,'env')
     app.add_config_value("iframe_saturation",1.5,'env')
@@ -438,7 +452,8 @@ class IframeFigure(Figure):
             "width": directives.unchanged,
             "aspectratio": directives.unchanged,
             "stylediv": directives.unchanged,
-            "styleframe": directives.unchanged
+            "styleframe": directives.unchanged,
+            "iframe_loading": directives.unchanged
         }
     )
     
@@ -452,3 +467,9 @@ class IframeFigure(Figure):
         figure_node[0] = node
 
         return [figure_node]
+
+def validate_config(app: Sphinx,config):
+    if config.iframe_loading not in ['lazy','eager']:
+        logger.warning(f"[sphinx-iframes] 'iframe_loading' config value '{config.iframe_loading}' is not valid. Setting to 'lazy'.")
+        config.iframe_loading = 'lazy'
+    return
