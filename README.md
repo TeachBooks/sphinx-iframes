@@ -66,6 +66,7 @@ sphinx:
         iframe_background:     "#ffffff" # default value
         iframe_width:          calc(100% - 2.8rem) # default value
         iframe_aspectratio:    auto 2 / 1 # default value
+        iframe_loading:        lazy # default value
         -
         -
         -
@@ -91,6 +92,9 @@ sphinx:
 - `iframe_aspectratio`: `auto 2 / 1` (_default_) or **CSS string**:
   - sets the standard aspect ration of the iframe within the parent element;
   - Any CSS string defining an aspect ratio can be used, see [aspect-ratio CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio).
+- `iframe_loading`: `lazy` (_default_) or `eager`:
+  - sets the standard loading attribute of the iframe;
+  - see [loading attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe#loading).
 
 ## Provided code
 
@@ -144,6 +148,9 @@ All of these have the following options:
   - Sets the style of the iframe. Use CSS compatible strings. Surround with " ".
 - `:stylediv:`
   - Sets the style of the surrounding div. Use CSS compatible strings. Surround with " ".
+- `:loading:`
+  - Sets the loading attribute of the iframe. Use either `lazy` or `eager`.
+  - If unset, the global configuration value is used.
 
 For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
 
