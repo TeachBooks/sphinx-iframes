@@ -13,6 +13,8 @@ This extension provides several Sphinx directives:
 - `h5p`
 - `video`
 - `iframe-figure`
+- `video-figure`
+- `h5p-figure`
 
  that can be used to quickly insert an iframe with standard sizing and styling.
 
@@ -127,6 +129,22 @@ The caption for the iframe.
 ```
 ````
 
+````md
+```{h5p-figure} <link_to_h5p_webpage_to_embed>
+:name: some:label
+
+The caption for the h5p webpage.
+```
+````
+
+````md
+```{video-figure} <link_to_video_to_embed>
+:name: some:label
+
+The caption for the video.
+```
+````
+
 Note that you don't need the full embed code of an iframe. Only the source url should be used.
 
 All of these have the following options:
@@ -152,7 +170,14 @@ All of these have the following options:
 
 For the directive `video`, if a direct link to a video file is given, then only the options from the `video` directive from [sphinxcontrib.video](https://sphinxcontrib-video.readthedocs.io/en/latest/quickstart.html) should be used. For any other link, the options above should be used.
 
-The directive `iframe-figure` also inherits all options from the `figure` directive from Sphinx.
+The directives `iframe-figure`, `video-figure` and `h5p-figure` also inherit all options from the `figure` directive from the extension `sphinx_metadata_figure`.
+
+## Metadata
+
+The `iframe-figure`, `video-figure` and `h5p-figure` directives use the `figure` directive from the `sphinx_metadata_figure` extension to add metadata to the figures they create. This metadata can include information such as author, license, copyright, and source. This information is useful for documentation and attribution purposes.
+
+> [!NOTE]
+> This extension always loads the extension `sphinx_metadata_figure` as it depends on it to add metadata to the figures. This means that also the configuration options of that extension are available and if this is not desired, you must disable the workings of that extensions by applying appropriate settings in `metadata_figure_settings` in your Sphinx configuration file. See the [documentation](https://teachbooks.io/manual/_git/github.com_TeachBooks_Sphinx-Metadata-Figure/main/MANUAL.html) of the `sphinx_metadata_figure` extension for more information.
 
 ## Examples and details
 

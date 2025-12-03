@@ -12,6 +12,7 @@ from sphinx.util import logging
 
 from typing import Optional
 
+from sphinx_metadata_figure import MetadataFigure
 from sphinx.directives.patches import Figure
 
 from sphinxcontrib.video import Video
@@ -246,11 +247,14 @@ def include_js(app: Sphinx):
 def setup(app: Sphinx):
 
     app.setup_extension('sphinxcontrib.video')
+    app.setup_extension('sphinx_metadata_figure')
 
     app.add_directive("iframe", IframeDirective)
-    app.add_directive("iframe-figure", IframeFigure)
     app.add_directive("h5p", IframeDirective)
     app.add_directive("video", IframeDirective,override=True) # override any other video directive
+    app.add_directive("iframe-figure", IframeFigure)
+    app.add_directive("video-figure", IframeFigure)
+    app.add_directive("h5p-figure", IframeFigure)
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.add_config_value("iframe_loading","lazy",'env')
@@ -440,8 +444,8 @@ def write_js(app: Sphinx,exc):
         with open(filename,"w") as js:
             js.write(JS_content)
 
-class IframeFigure(Figure):
-    option_spec = Figure.option_spec.copy()
+class IframeFigure(MetadataFigure):
+    option_spec = MetadataFigure.option_spec.copy()
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = True
@@ -461,12 +465,43 @@ class IframeFigure(Figure):
         label = self.options.pop('label', None)
         if label is not None:
             self.options.set('name', label)
-        (figure_node,) = Figure.run(self)
+        # Access environment/config for whether to use metadata figure
+        env = getattr(self.state.document.settings, 'env', None)
+        config = getattr(env.app, 'config', None) if env else None
+        metadata_settings = getattr(config, 'metadata_figure_settings', {}) if config else {}
+        style_settings = metadata_settings.get('style', {})
+        placement = self.options.get('placement', style_settings.get('placement', 'hide'))
+        if placement == 'caption':
+            self.options["placement"] = 'caption'
+            (figure_node,) = MetadataFigure.run(self)
+            other_nodes = None
+        elif placement == 'admonition':
+            self.options["placement"] = 'admonition'
+            figure_nodes = MetadataFigure.run(self)
+            figure_node = figure_nodes[0]
+            other_nodes = figure_nodes[1]
+        elif placement == 'margin':
+            self.options["placement"] = 'margin'
+            figure_nodes = MetadataFigure.run(self)
+            figure_node = figure_nodes[1]
+            other_nodes = figure_nodes[0]
+        else:
+            # Just create a normal figure node without metadata
+            (figure_node,) = Figure.run(self)
+            other_nodes = None
+
         iframe_html = generate_iframe_html(self)
         node = iframe_node(None, iframe_html, format="html")
         figure_node[0] = node
 
-        return [figure_node]
+        if self.options.get('placement', style_settings.get('placement', 'hide')) == 'caption':
+            return [figure_node]
+        elif self.options.get('placement', style_settings.get('placement', 'hide')) == 'admonition':
+            return [figure_node] + [other_nodes]
+        elif self.options.get('placement', style_settings.get('placement', 'hide')) == 'margin':
+            return [other_nodes] + [figure_node]
+        else:
+            return [figure_node]
 
 def validate_config(app: Sphinx,config):
     if config.iframe_loading not in ['lazy','eager']:
