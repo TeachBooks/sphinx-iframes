@@ -65,7 +65,7 @@ class IframeDirective(SphinxDirective):
         assert self.arguments[0] is not None
 
         # discriminate between mp4, webm, ogg and other urls for the video directive
-        if self.name == "video":
+        if self.name in ["video","video-figure"]:
             if self.arguments[0].lower().endswith('.mp4') or self.arguments[0].lower().endswith('.webm') or self.arguments[0].lower().endswith('.ogg'):
                 video_directive = Video(
                     self.name,
@@ -105,12 +105,12 @@ def generate_iframe_html(source):
         div_class = ""
     iframe_class = source.options.get("class")
 
-    if source.name == "h5p":
+    if source.name in ["h5p","h5p-figure"]:
         base_class = "sphinx h5p blend"
         if iframe_class is not None:
             if "no-blend" in iframe_class:
                 base_class = "sphinx h5p"        
-    elif source.name == "video":
+    elif source.name in ["video","video-figure"]:
         base_class = "sphinx video no-blend"
         if iframe_class is not None:
             if "blend" in iframe_class and "not-blend" not in iframe_class:
@@ -125,7 +125,7 @@ def generate_iframe_html(source):
     else:
         iframe_class = base_class+""+str(iframe_class)
     
-    if source.name == 'h5p':
+    if source.name in ["h5p","h5p-figure"]:
         style = generate_style(
             None, None,"auto",None
         )
@@ -171,6 +171,8 @@ def generate_iframe_html(source):
             options = ';'.join(options)
 
             url = 'https://www.youtube.com/embed/'+video+'?'+options
+        elif 'watch/' in url:
+            url = url.replace('watch/','embed/')
     if 'youtu.be' in url:
         tail = url[1+url.find('?'):]
         list_index = tail.find('list=PL')
@@ -200,13 +202,13 @@ def generate_iframe_html(source):
         url = base_video+'?'+options
 
     # Handle H5P URLs - add /embed if not present
-    if source.name == 'h5p':
+    if source.name in ["h5p","h5p-figure"]:
         if '/embed' not in url and url.endswith('/'):
             url = url + 'embed'
         elif '/embed' not in url and not url.endswith('/'):
             url = url + '/embed'
 
-    if source.name == "video":
+    if source.name in ["video","video-figure"]:
         if add_user:
             iframe_html = '<div class="video-container user %s" %s>\n'%(div_class, style)
         else:
@@ -215,7 +217,7 @@ def generate_iframe_html(source):
             <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
         """
         iframe_html += '\n</div>'
-    elif source.name == 'h5p':
+    elif source.name in ["h5p","h5p-figure"]:
         if add_user:
             iframe_html = '<div class="iframe-container user %s" %s>\n'%(div_class, style)
         else:
