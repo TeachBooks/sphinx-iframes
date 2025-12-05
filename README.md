@@ -473,7 +473,7 @@ You can also add metadata, for more options see [Shpinx Metadata Figure](https:/
 
 The caption for the iframe.
 ```
-`````md
+`````
 
 ### `{h5p-figure}` directive
 
