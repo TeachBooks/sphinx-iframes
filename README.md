@@ -463,6 +463,86 @@ The caption for the iframe.
 The caption for the iframe.
 ```
 
+You can also add metadata (here shown with default options in `_config.yml`, for more options see [Shpinx Metadata Figure](https://teachbooks.io/manual/_git/github.com_TeachBooks_Sphinx-Metadata-Figure/main/MANUAL.html):
+
+`````md
+```{iframe-figure} https://teachbooks.io/
+:name: intro-iframe-figure
+:license: CC-BY
+:placement: caption
+
+The caption for the iframe.
+```
+`````
+
+```{iframe-figure} https://teachbooks.io/
+:name: intro-iframe-figure
+:license: CC-BY
+:placement: caption
+
+The caption for the iframe.
+```
+
+### `{h5p-figure}` directive
+
+You can use the same metadata for H5p elements using `{h5p-figure}`:
+
+````md
+```{h5p-figure} https://tudelft.h5p.com/content/1292011179114024347/embed
+:name: intro-h5p-figure
+:show: author,license,date,copyright
+:license: CC-BY
+:placement: margin
+:author: Tom van Woudenberg
+:copyright: Delft University of Technology
+:date: today
+
+The caption for the h5p webpage.
+```
+````
+
+```{h5p-figure} https://tudelft.h5p.com/content/1292011179114024347/embed
+:name: intro-h5p-figure
+:show: author,license,date,copyright
+:license: CC-BY
+:placement: margin
+:author: Tom van Woudenberg
+:copyright: Delft University of Technology
+:date: today
+
+The caption for the h5p webpage.
+```
+
+### `{video-figure}` directive
+
+And the same metadata works for videos with `{video-figure}`:
+
+````md
+```{video-figure} https://www.youtube.com/watch/B1J6Ou4q8vE
+:name: intro-video-figure
+:show: author,license,date,source
+:license: CC-BY
+:placement: admonition
+:author: Alan Becker
+:date: 2023-06-24
+:source: [YouTube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
+
+The caption for the video.
+```
+````
+
+```{video-figure} https://www.youtube.com/watch/B1J6Ou4q8vE
+:name: intro-video-figure
+:show: author,license,date,source
+:license: CC-BY
+:placement: admonition
+:author: Alan Becker
+:date: 2023-06-24
+:source: [YouTube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
+
+The caption for the video.
+```
+
 ## Contribute
 
 This tool's repository is stored on [GitHub](https://github.com/TeachBooks/sphinx-iframes). If you'd like to contribute, you can create a fork and open a pull request on the [GitHub repository](https://github.com/TeachBooks/sphinx-iframes).
