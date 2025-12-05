@@ -495,7 +495,7 @@ You can use the same metadata for H5p elements using `{h5p-figure}`:
 :placement: margin
 :author: Tom van Woudenberg
 :copyright: Delft University of Technology
-:date: today
+:date: 'today'
 
 The caption for the h5p webpage.
 ```
@@ -508,7 +508,7 @@ The caption for the h5p webpage.
 :placement: margin
 :author: Tom van Woudenberg
 :copyright: Delft University of Technology
-:date: today
+:date: 'today'
 
 The caption for the h5p webpage.
 ```
@@ -525,7 +525,7 @@ And the same metadata works for videos with `{video-figure}`:
 :placement: admonition
 :author: Alan Becker
 :date: 2023-06-24
-:source: [Youtube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
+:source: [YouTube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
 
 The caption for the video.
 ```
@@ -538,7 +538,7 @@ The caption for the video.
 :placement: admonition
 :author: Alan Becker
 :date: 2023-06-24
-:source: [Youtube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
+:source: [YouTube](https://www.youtube.com/watch?v=B1J6Ou4q8vE)
 
 The caption for the video.
 ```
