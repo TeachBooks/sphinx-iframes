@@ -14,7 +14,7 @@ authors = [
 dependencies = [
     "sphinx",
     "sphinxcontrib-video",
-    "sphinx-metadata-figure>=v1.0.3"
+    "sphinx-metadata-figure>=v1.1.1"
 ]
 
 requires-python = ">=3.10"
