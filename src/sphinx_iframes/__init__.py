@@ -12,6 +12,7 @@ from sphinx.util import logging
 
 from typing import Optional
 
+from sphinx_metadata_figure import MetadataFigure
 from sphinx.directives.patches import Figure
 
 from sphinxcontrib.video import Video
@@ -64,7 +65,7 @@ class IframeDirective(SphinxDirective):
         assert self.arguments[0] is not None
 
         # discriminate between mp4, webm, ogg and other urls for the video directive
-        if self.name == "video":
+        if self.name in ["video","video-figure"]:
             if self.arguments[0].lower().endswith('.mp4') or self.arguments[0].lower().endswith('.webm') or self.arguments[0].lower().endswith('.ogg'):
                 video_directive = Video(
                     self.name,
@@ -104,12 +105,12 @@ def generate_iframe_html(source):
         div_class = ""
     iframe_class = source.options.get("class")
 
-    if source.name == "h5p":
+    if source.name in ["h5p","h5p-figure"]:
         base_class = "sphinx h5p blend"
         if iframe_class is not None:
             if "no-blend" in iframe_class:
                 base_class = "sphinx h5p"        
-    elif source.name == "video":
+    elif source.name in ["video","video-figure"]:
         base_class = "sphinx video no-blend"
         if iframe_class is not None:
             if "blend" in iframe_class and "not-blend" not in iframe_class:
@@ -124,7 +125,7 @@ def generate_iframe_html(source):
     else:
         iframe_class = base_class+""+str(iframe_class)
     
-    if source.name == 'h5p':
+    if source.name in ["h5p","h5p-figure"]:
         style = generate_style(
             None, None,"auto",None
         )
@@ -170,6 +171,8 @@ def generate_iframe_html(source):
             options = ';'.join(options)
 
             url = 'https://www.youtube.com/embed/'+video+'?'+options
+        elif 'watch/' in url:
+            url = url.replace('watch/','embed/')
     if 'youtu.be' in url:
         tail = url[1+url.find('?'):]
         list_index = tail.find('list=PL')
@@ -199,13 +202,13 @@ def generate_iframe_html(source):
         url = base_video+'?'+options
 
     # Handle H5P URLs - add /embed if not present
-    if source.name == 'h5p':
+    if source.name in ["h5p","h5p-figure"]:
         if '/embed' not in url and url.endswith('/'):
             url = url + 'embed'
         elif '/embed' not in url and not url.endswith('/'):
             url = url + '/embed'
 
-    if source.name == "video":
+    if source.name in ["video","video-figure"]:
         if add_user:
             iframe_html = '<div class="video-container user %s" %s>\n'%(div_class, style)
         else:
@@ -214,7 +217,7 @@ def generate_iframe_html(source):
             <iframe class="{iframe_class}" {frame_style} src="{url}" allow="fullscreen *;autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *" frameborder="0"></iframe>
         """
         iframe_html += '\n</div>'
-    elif source.name == 'h5p':
+    elif source.name in ["h5p","h5p-figure"]:
         if add_user:
             iframe_html = '<div class="iframe-container user %s" %s>\n'%(div_class, style)
         else:
@@ -246,11 +249,14 @@ def include_js(app: Sphinx):
 def setup(app: Sphinx):
 
     app.setup_extension('sphinxcontrib.video')
+    app.setup_extension('sphinx_metadata_figure')
 
     app.add_directive("iframe", IframeDirective)
-    app.add_directive("iframe-figure", IframeFigure)
     app.add_directive("h5p", IframeDirective)
     app.add_directive("video", IframeDirective,override=True) # override any other video directive
+    app.add_directive("iframe-figure", IframeFigure)
+    app.add_directive("video-figure", IframeFigure)
+    app.add_directive("h5p-figure", IframeFigure)
 
     app.add_config_value("iframe_h5p_autoresize",True,'env')
     app.add_config_value("iframe_loading","lazy",'env')
@@ -440,8 +446,8 @@ def write_js(app: Sphinx,exc):
         with open(filename,"w") as js:
             js.write(JS_content)
 
-class IframeFigure(Figure):
-    option_spec = Figure.option_spec.copy()
+class IframeFigure(MetadataFigure):
+    option_spec = MetadataFigure.option_spec.copy()
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = True
@@ -461,12 +467,43 @@ class IframeFigure(Figure):
         label = self.options.pop('label', None)
         if label is not None:
             self.options.set('name', label)
-        (figure_node,) = Figure.run(self)
+        # Access environment/config for whether to use metadata figure
+        env = getattr(self.state.document.settings, 'env', None)
+        config = getattr(env.app, 'config', None) if env else None
+        metadata_settings = getattr(config, 'metadata_figure_settings', {}) if config else {}
+        style_settings = metadata_settings.get('style', {})
+        placement = self.options.get('placement', style_settings.get('placement', 'hide'))
+        if placement == 'caption':
+            self.options["placement"] = 'caption'
+            (figure_node,) = MetadataFigure.run(self)
+            other_nodes = None
+        elif placement == 'admonition':
+            self.options["placement"] = 'admonition'
+            figure_nodes = MetadataFigure.run(self)
+            figure_node = figure_nodes[0]
+            other_nodes = figure_nodes[1]
+        elif placement == 'margin':
+            self.options["placement"] = 'margin'
+            figure_nodes = MetadataFigure.run(self)
+            figure_node = figure_nodes[1]
+            other_nodes = figure_nodes[0]
+        else:
+            # Just create a normal figure node without metadata
+            (figure_node,) = Figure.run(self)
+            other_nodes = None
+
         iframe_html = generate_iframe_html(self)
         node = iframe_node(None, iframe_html, format="html")
         figure_node[0] = node
 
-        return [figure_node]
+        if self.options.get('placement', style_settings.get('placement', 'hide')) == 'caption':
+            return [figure_node]
+        elif self.options.get('placement', style_settings.get('placement', 'hide')) == 'admonition':
+            return [figure_node] + [other_nodes]
+        elif self.options.get('placement', style_settings.get('placement', 'hide')) == 'margin':
+            return [other_nodes] + [figure_node]
+        else:
+            return [figure_node]
 
 def validate_config(app: Sphinx,config):
     if config.iframe_loading not in ['lazy','eager']:
