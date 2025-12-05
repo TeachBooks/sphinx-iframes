@@ -463,7 +463,7 @@ The caption for the iframe.
 The caption for the iframe.
 ```
 
-You can also add metadata, for more options see [Shpinx Metadata Figure](https://teachbooks.io/manual/_git/github.com_TeachBooks_Sphinx-Metadata-Figure/main/MANUAL.html):
+You can also add metadata (here shown with default options in `_config.yml`, for more options see [Shpinx Metadata Figure](https://teachbooks.io/manual/_git/github.com_TeachBooks_Sphinx-Metadata-Figure/main/MANUAL.html):
 
 `````md
 ```{iframe-figure} https://teachbooks.io/
