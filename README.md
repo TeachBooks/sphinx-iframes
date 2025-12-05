@@ -495,7 +495,7 @@ You can use the same metadata for H5p elements using `{h5p-figure}`:
 :placement: margin
 :author: Tom van Woudenberg
 :copyright: Delft University of Technology
-:date: 'today'
+:date: today
 
 The caption for the h5p webpage.
 ```
@@ -508,7 +508,7 @@ The caption for the h5p webpage.
 :placement: margin
 :author: Tom van Woudenberg
 :copyright: Delft University of Technology
-:date: 'today'
+:date: today
 
 The caption for the h5p webpage.
 ```
