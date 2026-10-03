@@ -50,6 +50,7 @@ class IframeDirective(SphinxDirective):
     optional_arguments = 0
     final_argument_whitespace = True
     option_spec = {
+        **Video.option_spec, # add the option specs of sphinxcontrib-video, so wrapping works correctly
         'class': directives.class_option,
         "height": directives.unchanged,
         "width": directives.unchanged,
@@ -59,7 +60,7 @@ class IframeDirective(SphinxDirective):
         "divclass": directives.class_option,
         "iframe_loading": directives.unchanged,
     }
-
+    
     def run(self) -> list[nodes.Node]:
 
         assert self.arguments[0] is not None
